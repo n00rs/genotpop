@@ -1,0 +1,13 @@
+name: "inventary-management"
+services:
+  api:
+    build: .
+    ports:
+      - 5000:${PORT}
+    volumes:
+      - ./:/usr/src/app:ro
+    command: npm start
+    # we can pass file of environment variables or pass an array of envs
+    env_file:
+      - ./.env
+
