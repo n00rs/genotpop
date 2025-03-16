@@ -1,3 +1,3 @@
 import expCallback from "./expCallback.ts";
-
-export { expCallback };
+import ErrorHandler from "./errorHandler.ts";
+export { expCallback ,ErrorHandler};

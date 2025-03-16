@@ -1,4 +1,5 @@
 import type { Request, Response, NextFunction } from "express";
+import {ErrorHandler} from "./index.ts";
 
 /**
  * Factory function to create an Express middleware callback.
@@ -42,6 +43,7 @@ export default function expCallbackFactory(controller: TcontrollerFunc) {
         strBaseUrl: req.baseUrl,
         strIp: req.ip,
         strIps: req.ips,
+        timeStamp: new Date(),
       };
       // Invoke the controller with extracted parameters
       const objRes = await controller(objParams);
@@ -55,8 +57,13 @@ export default function expCallbackFactory(controller: TcontrollerFunc) {
     } catch (err) {
       console.log("---------", err, "---------");
 
-      res.statusCode = err.intStatusCode || 400;
-      res.send(err.strMessage || "SOMETHING_WENT_WRONG");
+      if (err instanceof ErrorHandler) {
+        res.statusCode = err.statusCode;
+        res.send(err.objDetails);
+      } else {
+        res.statusCode = err.statusCode || 400;
+        res.send("SOMETHING_WENT_WRONG");
+      }
     }
   };
 }
@@ -64,9 +71,8 @@ export default function expCallbackFactory(controller: TcontrollerFunc) {
 interface Irequest extends Request {
   intUserId: number;
 }
-
-type TcontrollerFunc = (objParams: {
-  body: Request["body"];
+export type TobjParams<Body = object> = {
+  body: Body;
   query: Request["query"];
   cookies: Request["cookies"];
   intUserId: number;
@@ -80,4 +86,14 @@ type TcontrollerFunc = (objParams: {
   strBaseUrl: Request["baseUrl"];
   strIp: Request["ip"];
   strIps: Request["ips"];
-}) => Promise<{ intStatusCode?: number; [key: string]: any }>;
+  timeStamp: Date;
+};
+
+export type TobjRes<Res> = {
+  intStatusCode?: number;
+  strMessage?: string;
+} & Res;
+
+export type TcontrollerFunc<Body = object, Res = object> = (
+  objParams: TobjParams<Body>
+) => Promise<TobjRes<Res>>;
