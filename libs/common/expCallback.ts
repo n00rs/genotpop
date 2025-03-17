@@ -7,7 +7,7 @@ import {ErrorHandler} from "./index.ts";
  * @param {TcontrollerFunc} controller - The controller function to handle the request.
  * @returns {Function} - Returns an Express middleware function.
  */
-export default function expCallbackFactory(controller: TcontrollerFunc) {
+export default function expCallbackFactory<T>(controller: TcontrollerFunc<T>) {
   /**
    * Express middleware function that processes the request, extracts relevant data,
    * and invokes the controller function.
@@ -71,7 +71,7 @@ export default function expCallbackFactory(controller: TcontrollerFunc) {
 interface Irequest extends Request {
   intUserId: number;
 }
-export type TobjParams<Body = object> = {
+export type TobjParams<Body> = {
   body: Body;
   query: Request["query"];
   cookies: Request["cookies"];
