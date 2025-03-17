@@ -1,13 +1,12 @@
-name: "inventary-management"
+version: "3.8"
 services:
   api:
     build: .
     ports:
       - 5000:${PORT}
     volumes:
-      - ./:/usr/src/app:ro
-    command: npm start
-    # we can pass file of environment variables or pass an array of envs
+      - ./:/usr/src/app
+      - /usr/src/app/node_modules  # Prevents overwriting node_modules
+    command: sh -c "npm install && npm start"  # Install dependencies and start the app
     env_file:
       - ./.env
-

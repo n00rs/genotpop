@@ -1,0 +1,8 @@
+version: "3.8"
+services:
+  api:
+    build: .
+    ports:
+      - 5000:${PORT}
+    env_file:
+      - ./.env
