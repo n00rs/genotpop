@@ -32,9 +32,9 @@ ReturnType<TloginController> => {
 
     // Create token payload
     const tokenPayload = {
-      id: user.intUserId,
-      email: user.strEmail,
-      role: user.strRole,
+      intUserId: user.intUserId,
+      strEmail: user.strEmail,
+      strRole: user.strRole,
     };
 
     // Generate JWT tokens
@@ -52,8 +52,8 @@ ReturnType<TloginController> => {
 
     return {
       strMessage: "LOGIN_SUCCESS",
-      email: user.strEmail,
-      id: user.intUserId,
+      strEmail: user.strEmail,
+      intUserId: user.intUserId,
       refreshToken,
       accessToken,
     };
@@ -111,8 +111,8 @@ export type TobjLoginBody = {
 export type TloginController = (
   objParams: TobjParams<TobjLoginBody>
 ) => Promise<TobjRes<{
-  email: string;
-  id: number;
+  strEmail: string;
+  intUserId: number;
   refreshToken: string;
   accessToken: string;
 }>>;
