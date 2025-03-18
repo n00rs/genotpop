@@ -59,8 +59,8 @@ export const generatePubPrivKeyPair = () =>
       privateKeyEncoding: {
         type: "pkcs8",
         format: "pem",
-        cipher: "aes-256-cbc",
-        passphrase: "top secret",
+        // cipher: "aes-256-cbc",  this two key not use 
+        // passphrase: "top secret",
       },
     });
     return { strPublicKey: publicKey, strPrivateKey: privateKey };
