@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node --watch --env-file=.env --experimental-strip-types server.ts",
-    "build": "node --experimental-strip-types server.ts"
+    "build": "node --experimental-strip-types server.ts",
+    "init-db": "node --experimental-strip-types database/initDb.ts"
   },
   "repository": {
     "type": "git",
