@@ -1,12 +1,10 @@
-import { getPgConnection } from "../../config/index.ts";
 import {
   ErrorHandler,
   comparePassword,
+  getUserDetailsByEmail,
 } from "../common/index.ts";
 import { jwtSign } from "../common/jwt.ts"; 
 import type { TobjParams, TobjRes } from "../common/expCallback.ts";
-import type { QueryResult } from "pg";
-
 
 export const loginController = async ({
   body,
@@ -21,39 +19,39 @@ ReturnType<TloginController> => {
     if (!strPassword) throw new ErrorHandler("KEY_MISSING_PASSWORD");
 
     // Fetch user details by email
-    const user = await getUserDetailsByEmail(strEmail);
+    const objUserDetails = await getUserDetailsByEmail(strEmail);
 
-    if (!user) throw new ErrorHandler("USER_NOT_FOUND");
-
+    if (!objUserDetails) throw new ErrorHandler("USER_NOT_FOUND");
+    
     // Compare the provided password with the hashed password
-    const isPasswordValid = await comparePassword(strPassword, user.strPassword);
+    const isPasswordValid = await comparePassword(strPassword, objUserDetails?.strPassword);
 
     if (!isPasswordValid) throw new ErrorHandler("INVALID_PASSWORD");
 
     // Create token payload
     const tokenPayload = {
-      intUserId: user.intUserId,
-      strEmail: user.strEmail,
-      strRole: user.strRole,
+      intUserId: objUserDetails?.intUserId,
+      strEmail: objUserDetails?.strEmail,
+      strRole: objUserDetails?.strRole,
     };
 
     // Generate JWT tokens
     const accessToken = jwtSign({
         objPayload: tokenPayload,
         strType: "ACCESS",
-        strPrivateKey: user.strAccPrivateKey,
+        strPrivateKey: objUserDetails?.strAccPrivateKey,
       });
       
       const refreshToken = jwtSign({
         objPayload: tokenPayload,
         strType: "REFRESH",
-        strPrivateKey: user.strRefrPrivateKey,
+        strPrivateKey: objUserDetails?.strRefrPrivateKey,
       });
 
     return {
       strMessage: "LOGIN_SUCCESS",
-      strEmail: user.strEmail,
-      intUserId: user.intUserId,
+      strEmail: objUserDetails?.strEmail,
+      intUserId: objUserDetails?.intUserId,
       refreshToken,
       accessToken,
     };
@@ -61,44 +59,6 @@ ReturnType<TloginController> => {
     throw new ErrorHandler(err);
   }
 };
-
-/**
- * @description Function to fetch user details by email
- * @param strEmail
- * @returns User details
- * @throws ErrorHandler
- */
-async function getUserDetailsByEmail(strEmail: string) {
-  try {
-    if (!strEmail) throw new ErrorHandler("KEY_MISSING_EMAIL");
-    // Get a connection pool
-    const objConnectionPool = await getPgConnection({ blnPool: true });
-    // Query to fetch user details by email
-    const strQuery = `
-      SELECT 
-        pk_bint_user_id AS "intUserId",
-        vchr_email AS "strEmail",
-        vchr_password AS "strPassword",
-        vchr_role AS "strRole",
-        vchr_acc_private_key AS "strAccPrivateKey",
-        vchr_refr_private_key AS "strRefrPrivateKey"
-      FROM tbl_user 
-      WHERE vchr_email = $1 AND chr_document_status = 'N'
-    `;
-    const { rows }: QueryResult<{
-      intUserId: number;
-      strEmail: string;
-      strPassword: string;
-      strRole: string;
-      strAccPrivateKey: string;
-      strRefrPrivateKey: string;
-    }> = await objConnectionPool.query(strQuery, [strEmail]);
-    // Return user details
-    return rows[0];
-  } catch (error) {
-    throw new ErrorHandler(error);
-  }
-}
 
 /**
  * @description Type definitions for login controller

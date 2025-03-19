@@ -1,4 +1,5 @@
 import expCallback from "./expCallback.ts";
+import {getUserDetailsByEmail} from "./getUser.ts";
 import ErrorHandler from "./errorHandler.ts";
 import {
   hashPassword,
@@ -12,4 +13,5 @@ export {
   hashPassword,
   comparePassword,
   generatePubPrivKeyPair,
+  getUserDetailsByEmail
 };
