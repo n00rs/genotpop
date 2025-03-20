@@ -63,7 +63,7 @@ CREATE INDEX idx_customer_code_and_name ON tbl_customer(vchr_customer_code, vchr
 
 
 CREATE TABLE IF NOT EXISTS tbl_inventory (
-  pk_bint_inventroy_id SERIAL PRIMARY KEY NOT NULL,
+  pk_bint_inventory_id SERIAL PRIMARY KEY NOT NULL,
   vchr_batchcode VARCHAR(100) UNIQUE NOT NULL,
   fk_stock_id INTEGER REFERENCES tbl_stock(pk_bint_stock_id) ON DELETE CASCADE,
   fk_category_id INTEGER REFERENCES tbl_category(pk_bint_category_id) ON DELETE CASCADE,

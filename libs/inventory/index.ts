@@ -1,19 +1,8 @@
-const createStockController = async ({ body, ...source }) => {
-  console.log({ body, source });
-  return {};
-};
-const getStockController = async ({ body, ...source }) => {
-  console.log({ body, source });
-  return {};
-};
-const updateStockController = async ({ body, ...source }) => {
-  console.log({ body, source });
-  return {};
-};
-const deleteStockController = async ({ body, ...source }) => {
-  console.log({ body, source });
-  return {};
-};
+
+import { createStockController } from "../stock/createStock.controller.ts";
+import { getStockController } from "../stock/getStock.controller.ts";
+import { updateStockController } from "../stock/updateStock.controller.ts";
+import { deleteStockController } from "../stock/deleteStock.controller.ts";
 
 const createStockCategoryController = async ({ body, ...source }) => {
   console.log({ body, source });
