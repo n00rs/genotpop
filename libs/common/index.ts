@@ -6,6 +6,8 @@ import {
   comparePassword,
   generatePubPrivKeyPair,
 } from "./hash.ts";
+import { authenticateMiddleware } from "./authMiddleware.ts";
+
 
 export {
   expCallback,
@@ -13,5 +15,6 @@ export {
   hashPassword,
   comparePassword,
   generatePubPrivKeyPair,
-  getUserDetailsByEmail
+  getUserDetailsByEmail,
+  authenticateMiddleware
 };

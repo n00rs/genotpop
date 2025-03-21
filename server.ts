@@ -12,6 +12,8 @@ import salesRoutes from "./routes/sales.router.ts";
 import reportsRoutes from "./routes/report.router.ts";
 import authRoutes from "./routes/auth.router.ts";
 
+import { authenticateMiddleware } from "./libs/common/authMiddleware.ts";
+
 app.use(
   cors({
     origin: ["http://localhost:5000", process.env.ORIGIN],
@@ -22,7 +24,14 @@ app.use(
 
 app.use(express.json({ limit: "10mb", inflate: false }));
 
+// Public routes (no authentication required)
+
 app.use("/api/v1/auth", authRoutes);
+
+// Apply the authenticateMiddleware globally (for all routes except the ones defined above)
+
+app.use( authenticateMiddleware );
+
 app.use("/api/v1/master", masterRoutes);
 app.use("/api/v1/sales", salesRoutes);
 app.use("/api/v1/reports", reportsRoutes);
