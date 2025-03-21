@@ -1,11 +1,7 @@
 import { signUpController } from "./signup.controller.ts";
 import { loginController } from "./login.controller.ts";
 import { resetPasswordController } from "./resetPassword.controller.ts";
-
-const refreshTokenController = async({ body, ...source }) => {
-  console.log({ body, source });
-  return {}
-};
+import { refreshTokenController } from "./refreshToken.controller.ts";
 
 export {
   loginController,
