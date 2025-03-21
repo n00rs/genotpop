@@ -4,11 +4,12 @@ import type { TobjParams, TobjRes } from "../common/expCallback.ts";
 
 export const updateStockController = async ({
   body,
+  ...source
 }: TobjParams<{ intStockId: number; strStockCode?: string; strStockName?: string; intUserId: number }>
 ): Promise<TobjRes<{ strMessage: string }>> => {
   try {
-    const { intStockId, strStockCode, strStockName, intUserId } = body;
-
+    const { intStockId, strStockCode, strStockName } = body;
+    const { intUserId } = source;
 
     // Validate input
     if (!intStockId) throw new ErrorHandler("KEY_MISSING_STOCK_ID");
