@@ -6,9 +6,10 @@ export const createStockController = async ({
   body,
   ...source
 }: TobjParams<TobjCreateStockBody>): Promise<TobjRes<{ strMessage: string; intStockId: number }>> => {
+  let client;
   try {
     const { strStockCode, strStockName } = body;
-    const { intUserId } = source;
+    let intUserId = 3; // Hardcoded for now
 
     // Validate input
     if (!strStockCode) throw new ErrorHandler("KEY_MISSING_STOCK_CODE");
@@ -16,18 +17,9 @@ export const createStockController = async ({
     if (!intUserId) throw new ErrorHandler("KEY_MISSING_USER_ID");
 
     const objConnectionPool = await getPgConnection({ blnPool: true });
+    client = await objConnectionPool.connect(); // Acquire a client from the pool
 
-    // Insert new stock
-    const strQuery = `
-      INSERT INTO tbl_stock (
-        vchr_stock_code, vchr_stock_name, fk_bint_created_id, fk_bint_modified_id
-      ) VALUES ($1, $2, $3, $3) RETURNING pk_bint_stock_id`;
-
-    const { rows } = await objConnectionPool.query(strQuery, [
-      strStockCode,
-      strStockName,
-      intUserId
-    ]);
+    const rows = await buildInsertQuery(client, strStockCode, strStockName, intUserId);
 
     if (!rows || rows.length === 0) {
       throw new ErrorHandler("STOCK_CREATION_FAILED");
@@ -39,6 +31,8 @@ export const createStockController = async ({
     };
   } catch (err) {
     throw new ErrorHandler(err.message || "STOCK_CREATION_FAILED");
+  } finally {
+    if (client) client.release(); // Ensure client is released
   }
 };
 
@@ -53,3 +47,13 @@ export type TobjCreateStockBody = {
 export type TcreateStockController = (
   objParams: TobjParams<TobjCreateStockBody>
 ) => Promise<TobjRes<{ strMessage: string; intStockId: number }>>;
+
+async function buildInsertQuery(client, strStockCode: string, strStockName: string, intUserId: number) {
+  const strQuery = `
+    INSERT INTO tbl_stock (
+      vchr_stock_code, vchr_stock_name, fk_bint_created_id, fk_bint_modified_id
+    ) VALUES ($1, $2, $3, $3) RETURNING pk_bint_stock_id`;
+
+  const { rows } = await client.query(strQuery, [strStockCode, strStockName, intUserId]);
+  return rows;
+}
