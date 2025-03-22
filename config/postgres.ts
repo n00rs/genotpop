@@ -44,6 +44,10 @@ async function getPgConnection({
     if (blnPool) {
       // Return a connection pool if `blnPool` is true
       const connectionPool = new pg.Pool(objDbConfig);
+      connectionPool.on('error',(err,client)=>{
+        console.warn(err.message);
+        // client.release(err)
+      })
       return connectionPool;
     }
 
@@ -52,7 +56,8 @@ async function getPgConnection({
     await connectionClient.connect()
     return connectionClient;
   } catch (err) {
-    throw new Error(err);
+    process.exit(1)
+    // throw new Error(err);
   }
 }
 export default getPgConnection ;

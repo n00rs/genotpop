@@ -5,12 +5,12 @@ import {
   resetPasswordController,
   signUpController,
 } from "../libs/authentication/index.ts";
-import { expCallback } from "../libs/common/index.ts";
+import { authenticateMiddleware, expCallback } from "../libs/common/index.ts";
 const router = Router();
 
 router.post("/login",expCallback(loginController));
 router.post("/sign_up",expCallback(signUpController));
-router.post("/reset_password",expCallback(resetPasswordController));
+router.post("/reset_password",authenticateMiddleware,expCallback(resetPasswordController));
 router.post("/refresh_token",expCallback(refreshTokenController));
 
 export default router;
