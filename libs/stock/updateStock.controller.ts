@@ -10,7 +10,7 @@ export const updateStockController = async ({
   let client;
   try {
     const { intStockId, strStockCode, strStockName } = body;
-    let intUserId = 3; // Hardcoded for now
+    const { intUserId } = source;
 
     // Validate input
     if (!intStockId) throw new ErrorHandler("KEY_MISSING_STOCK_ID");

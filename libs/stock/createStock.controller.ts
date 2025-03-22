@@ -9,7 +9,7 @@ export const createStockController = async ({
   let client;
   try {
     const { strStockCode, strStockName } = body;
-    let intUserId = 3; // Hardcoded for now
+    const { intUserId } = source;
 
     // Validate input
     if (!strStockCode) throw new ErrorHandler("KEY_MISSING_STOCK_CODE");
@@ -51,8 +51,8 @@ export type TcreateStockController = (
 async function buildInsertQuery(client, strStockCode: string, strStockName: string, intUserId: number) {
   const strQuery = `
     INSERT INTO tbl_stock (
-      vchr_stock_code, vchr_stock_name, fk_bint_created_id, fk_bint_modified_id
-    ) VALUES ($1, $2, $3, $3) RETURNING pk_bint_stock_id`;
+      vchr_stock_code, vchr_stock_name, fk_bint_created_id
+    ) VALUES ($1, $2, $3) RETURNING pk_bint_stock_id`;
 
   const { rows } = await client.query(strQuery, [strStockCode, strStockName, intUserId]);
   return rows;

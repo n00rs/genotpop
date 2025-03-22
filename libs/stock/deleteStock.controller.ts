@@ -53,7 +53,7 @@ async function buildDeleteQuery(client, intStockId: number): Promise<number> {
   // Check if stock is used in inventory
   const inventoryCheckQuery = `
     SELECT 1 FROM tbl_inventory 
-    WHERE fk_stock_id = $1 AND chr_document_status = 'N' LIMIT 1
+    WHERE fk_bint_stock_id = $1 AND chr_document_status = 'N' LIMIT 1
   `;
   const inventoryCheckResult = await client.query(inventoryCheckQuery, [intStockId]);
 
