@@ -53,8 +53,6 @@ export const deleteCustomerController: TdeleteCustomerController = async ({
       timeStamp: source.timeStamp,
     });
 
-    // Log the status of the update operation
-    console.log(blnStatusUpdate);
 
     // If the status update failed, throw an error indicating the customer was not found or already deleted
     if (!blnStatusUpdate) throw new ErrorHandler("CUSTOMER_NOT_FOUND_OR_ALREADY_DELETED");
