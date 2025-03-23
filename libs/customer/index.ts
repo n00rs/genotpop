@@ -1,19 +1,8 @@
-const createCustomerController = async ({ body, ...source }) => {
-  console.log({ body, source });
-  return {};
-};
-const getCustomerController = async ({ body, ...source }) => {
-  console.log({ body, source });
-  return {};
-};
-const updateCustomerController = async ({ body, ...source }) => {
-  console.log({ body, source });
-  return {};
-};
-const deleteCustomerController = async ({ body, ...source }) => {
-  console.log({ body, source });
-  return {};
-};
+import { createCustomerController } from "./createCustomer.controller.ts";
+import { getCustomerController } from "./getCustomer.controller.ts";
+import { updateCustomerController } from "./updateCustomer.controller.ts";
+import { deleteCustomerController } from "./deleteCustomer.controller.ts";
+
 
 export {
   createCustomerController,

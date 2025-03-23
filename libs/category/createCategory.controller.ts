@@ -1,6 +1,6 @@
 import { getPgConnection } from "../../config/index.ts";
 import { ErrorHandler } from "../common/index.ts";
-import type { TobjParams, TobjRes } from "../common/expCallback.ts";
+import type { TobjParams, TobjRes } from "../common/common.model.ts";
 
 export const createStockCategoryController = async ({
   body,
@@ -9,8 +9,7 @@ export const createStockCategoryController = async ({
   let client;
   try {
     const { strCategoryCode, strCategoryName } = body;
-    // const { intUserId } = source;
-    let intUserId = 3; // Hardcoded for now
+    const { intUserId } = source;
 
     // Validate input
     if (!strCategoryCode) throw new ErrorHandler("KEY_MISSING_CATEGORY_CODE");

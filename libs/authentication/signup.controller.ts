@@ -4,7 +4,7 @@ import {
   generatePubPrivKeyPair,
   hashPassword,
 } from "../common/index.ts";
-import type{ TobjParams, TobjRes } from "../common/expCallback.ts";
+import type{ TobjParams, TobjRes } from "../common/common.model.ts";
 import type { QueryResult } from "pg";
 
 const arrAllowedRoles = ["ADMIN", "SUPER_ADMIN", "USER"]; // Allowed roles
@@ -142,38 +142,62 @@ async function createUSer({
   }
 }
 /**
- *
+ * This section defines the type for the body of the sign-up request.
+ * It includes the following properties:
+ * - strEmail: The email address of the user (string).
+ * - strPassword: The password of the user (string).
+ * - strName: The name of the user (string).
+ * - strRole: The role of the user (string).
+ * - strPhone: The phone number of the user (string).
+ * - intUserId: (Optional) The ID of the user (number).
  */
 export type TobjSignUpBody = {
-  strEmail: string;
-  strPassword: string;
-  strName: string;
-  strRole: string;
-  strPhone: string;
-  intUserId?: number;
+  strEmail: string; // User's email address
+  strPassword: string; // User's password
+  strName: string; // User's name
+  strRole: string; // User's role
+  strPhone: string; // User's phone number
+  intUserId?: number; // Optional user ID
 };
+
 /**
- *
+ * This section defines the type for the sign-up controller function.
+ * It is a function that takes an object parameter of type TobjParams<TobjSignUpBody>
+ * and returns a Promise that resolves to an object of type TobjRes containing the login ID.
  */
 export type TsignUpController = (
-  objParams: TobjParams<TobjSignUpBody>
-) => Promise<TobjRes<{ intLoginId: number }>>;
+  objParams: TobjParams<TobjSignUpBody> // Parameters for the sign-up controller
+) => Promise<TobjRes<{ intLoginId: number }>>; // Response containing the login ID
 
+/**
+ * This section defines the type for the createUser function.
+ * It is a function that takes an object parameter with the following properties:
+ * - strEmail: The email address of the user (string).
+ * - strName: The name of the user (string).
+ * - strPassword: The hashed password of the user (string).
+ * - strPhone: The phone number of the user (string).
+ * - strRole: The role of the user (string).
+ * - intUserId: (Optional) The ID of the user (number or null).
+ * - objAccKeys: An object containing the account's public and private keys.
+ * - objRefrKeys: An object containing the refresh token's public and private keys.
+ * The function returns a Promise that resolves to an object containing the login ID.
+ */
 export type TcreateUSer = (objParams: {
-  strEmail: string;
-  strName: string;
-  strPassword: string;
-  strPhone: string;
-  strRole: string;
-  intUserId?: number | null;
+  strEmail: string; // User's email address
+  strName: string; // User's name
+  strPassword: string; // User's hashed password
+  strPhone: string; // User's phone number
+  strRole: string; // User's role
+  intUserId?: number | null; // Optional user ID
   objAccKeys: {
-    strPublicKey: string;
-    strPrivateKey: string;
+    strPublicKey: string; // Account's public key
+    strPrivateKey: string; // Account's private key
   };
   objRefrKeys: {
-    strPublicKey: string;
-    strPrivateKey: string;
+    strPublicKey: string; // Refresh token's public key
+    strPrivateKey: string; // Refresh token's private key
   };
 }) => Promise<{
-  intLoginId: number;
+  intLoginId: number; // Login ID of the created user
 }>;
+

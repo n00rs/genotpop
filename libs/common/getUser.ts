@@ -1,6 +1,7 @@
 import { getPgConnection } from "../../config/index.ts";
 import { ErrorHandler} from "../common/index.ts";
 import type { QueryResult } from "pg";
+import type{ TobjUserByEmail } from "./common.model.ts";
 /**
  * @description Function to fetch user details by email
  * @param strEmail
@@ -24,14 +25,7 @@ export async function getUserDetailsByEmail(strEmail: string) {
         FROM tbl_user 
         WHERE vchr_email = $1 AND chr_document_status = 'N'
       `;
-      const { rows }: QueryResult<{
-        intUserId: number;
-        strEmail: string;
-        strPassword: string;
-        strRole: string;
-        strAccPrivateKey: string;
-        strRefrPrivateKey: string;
-      }> = await objConnectionPool.query(strQuery, [strEmail]);
+      const { rows }: QueryResult<TobjUserByEmail> = await objConnectionPool.query(strQuery, [strEmail]);
       // Return user details
       return rows[0];
     } catch (error) {

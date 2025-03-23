@@ -1,6 +1,6 @@
 import { getPgConnection } from "../../config/index.ts";
 import { ErrorHandler } from "../common/index.ts";
-import type { TobjParams, TobjRes } from "../common/expCallback.ts";
+import type { TobjParams, TobjRes } from "../common/common.model.ts";
 
 export const createStockController = async ({
   body,
