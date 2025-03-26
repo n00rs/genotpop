@@ -1,5 +1,6 @@
 import type { Request, Response, NextFunction } from "express";
 import {ErrorHandler} from "./index.ts";
+import type { TobjParams,TobjRes } from "./common.model.ts";
 
 /**
  * Factory function to create an Express middleware callback.
@@ -71,28 +72,6 @@ export default function expCallbackFactory<T>(controller: TcontrollerFunc<T>) {
 interface Irequest extends Request {
   intUserId: number;
 }
-export type TobjParams<Body> = {
-  body: Body;
-  query: Request["query"];
-  cookies: Request["cookies"];
-  intUserId: number;
-  strMethod: string;
-  objHeaders: {
-    strUserAgent: string | undefined;
-    strToken: string | undefined;
-  };
-  strOriginalUrl: Request["originalUrl"];
-  strUrl: Request["url"];
-  strBaseUrl: Request["baseUrl"];
-  strIp: Request["ip"];
-  strIps: Request["ips"];
-  timeStamp: Date;
-};
-
-export type TobjRes<Res> = {
-  intStatusCode?: number;
-  strMessage?: string;
-} & Res;
 
 export type TcontrollerFunc<Body = object, Res = object> = (
   objParams: TobjParams<Body>

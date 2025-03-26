@@ -1,6 +1,6 @@
 import type { QueryResult } from "pg";
 import { ErrorHandler } from "../common/index.ts";
-import type { TobjParams, TobjRes } from "../common/expCallback.ts";
+import type { TobjParams, TobjRes } from "../common/common.model.ts";
 import { jwtDecode, jwtSign, jwtVerify } from "../common/jwt.ts";
 import getPgConnection from "../../config/postgres.ts";
 /**

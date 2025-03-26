@@ -1,6 +1,6 @@
 import { getPgConnection } from "../../config/index.ts";
 import { ErrorHandler, hashPassword, comparePassword, getUserDetailsByEmail,} from "../common/index.ts";
-import type { TobjParams, TobjRes } from "../common/expCallback.ts";
+import type { TobjParams, TobjRes } from "../common/common.model.ts";
 
 /**
  * @description Reset password controller (by check and verifies old password)

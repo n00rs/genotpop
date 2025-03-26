@@ -4,7 +4,7 @@ import {
   getUserDetailsByEmail,
 } from "../common/index.ts";
 import { jwtSign } from "../common/jwt.ts"; 
-import type { TobjParams, TobjRes } from "../common/expCallback.ts";
+import type { TobjParams, TobjRes } from "../common/common.model.ts";
 
 export const loginController = async ({
   body,
