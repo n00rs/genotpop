@@ -71,7 +71,7 @@ export const getCustomerController: TgetCustomerController = async ({
  * @param param0 - Object containing filter, sorting, and pagination details.
  * @returns Array of customer records from the database.
  */
-const getCustomerList: TgetCustomerList = async ({
+export const getCustomerList: TgetCustomerList = async ({
   strCustomerCode = "",
   strCustomerName = "",
   strEmail = "",

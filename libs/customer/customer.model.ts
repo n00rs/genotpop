@@ -108,7 +108,7 @@ export type TqueryRes = QueryResult<
  *
  * @param objParams - An object containing optional filter criteria, sorting options, and pagination details:
  * - `strCustomerCode`: (Optional) The unique code identifying the customer.
- * - `strCustomerName`: (Optional) The name of the customer. 
+ * - `strCustomerName`: (Optional) The name of the customer.
  * - `strEmail`: (Optional) The email address of the customer.
  * - `intCustomerId`: (Optional) The unique ID of the customer.
  * - `strActive`: (Optional) The field by which the results should be sorted.
@@ -182,3 +182,40 @@ export type TupdateCustomerStatus = (objParams: {
   timeStamp: Date;
 }) => Promise<boolean>;
 
+/**
+ * Represents the controller function for updating a customer's details.
+ *
+ * @param objParams - The parameters for the request, including the customer details to be updated.
+ * @returns A promise that resolves to an object containing the updated customer's ID.
+ */
+export type TupdateCustomerController = (
+  objParams: TobjParams<IobjGetCustomerRes>
+) => Promise<TobjRes<{ intCustomerId: number }>>;
+
+/**
+ * Represents the function for updating a customer's details in the database.
+ *
+ * @param objParams - An object containing the details to update for a specific customer:
+ * - `timeStamp`: The timestamp of when the update is performed.
+ * - `intUserId`: The ID of the user performing the update.
+ * - `intCustomerId`: The unique ID of the customer to update.
+ * - `strPhone`: The updated phone number of the customer.
+ * - `strEmail`: The updated email address of the customer.
+ * - `strAddress`: The updated physical address of the customer.
+ * - `dblDiscountPercent`: The updated discount percentage applicable to the customer.
+ * - `strGstNo`: The updated GST (Goods and Services Tax) number of the customer.
+ * - `strGstAddress`: The updated GST-registered address of the customer.
+ *
+ * @returns A promise that resolves to a boolean indicating whether the update was successful.
+ */
+export type TupdateCustomerDb = (objParams: {
+  timeStamp: Date;
+  intUserId: number;
+  intCustomerId: number;
+  strPhone: string;
+  strEmail: string;
+  strAddress: string;
+  dblDiscountPercent: number;
+  strGstNo: string;
+  strGstAddress: string;
+}) => Promise<boolean>;
