@@ -3,14 +3,13 @@ import {
   comparePassword,
   getUserDetailsByEmail,
 } from "../common/index.ts";
-import { jwtSign } from "../common/jwt.ts"; 
+import { jwtSign } from "../common/jwt.ts";
 import type { TobjParams, TobjRes } from "../common/common.model.ts";
 
 export const loginController = async ({
   body,
   ...source
-}: Parameters<TloginController>[0]): 
-ReturnType<TloginController> => {
+}: Parameters<TloginController>[0]): ReturnType<TloginController> => {
   try {
     const { strEmail, strPassword } = body;
 
@@ -22,38 +21,38 @@ ReturnType<TloginController> => {
     const objUserDetails = await getUserDetailsByEmail(strEmail);
 
     if (!objUserDetails) throw new ErrorHandler("USER_NOT_FOUND");
-    
+
     // Compare the provided password with the hashed password
     const isPasswordValid = await comparePassword(strPassword, objUserDetails?.strPassword);
 
     if (!isPasswordValid) throw new ErrorHandler("INVALID_PASSWORD");
 
     // Create token payload
-    const tokenPayload = {
+    const objTokenPayload = {
       intUserId: objUserDetails?.intUserId,
       strEmail: objUserDetails?.strEmail,
       strRole: objUserDetails?.strRole,
     };
 
     // Generate JWT tokens
-    const accessToken = jwtSign({
-        objPayload: tokenPayload,
-        strType: "ACCESS",
-        strPrivateKey: objUserDetails?.strAccPrivateKey,
-      });
-      
-      const refreshToken = jwtSign({
-        objPayload: tokenPayload,
-        strType: "REFRESH",
-        strPrivateKey: objUserDetails?.strRefrPrivateKey,
-      });
+    const strAccessToken = jwtSign({
+      objPayload: objTokenPayload,
+      strType: "ACCESS",
+      strPrivateKey: objUserDetails?.strAccPrivateKey,
+    });
+
+    const strRefreshToken = jwtSign({
+      objPayload: objTokenPayload,
+      strType: "REFRESH",
+      strPrivateKey: objUserDetails?.strRefrPrivateKey,
+    });
 
     return {
       strMessage: "LOGIN_SUCCESS",
       strEmail: objUserDetails?.strEmail,
       intUserId: objUserDetails?.intUserId,
-      refreshToken,
-      accessToken,
+      strRefreshToken,
+      strAccessToken,
     };
   } catch (err) {
     throw new ErrorHandler(err);
@@ -70,9 +69,11 @@ export type TobjLoginBody = {
 
 export type TloginController = (
   objParams: TobjParams<TobjLoginBody>
-) => Promise<TobjRes<{
-  strEmail: string;
-  intUserId: number;
-  refreshToken: string;
-  accessToken: string;
-}>>;
+) => Promise<
+  TobjRes<{
+    strEmail: string;
+    intUserId: number;
+    strRefreshToken: string;
+    strAccessToken: string;
+  }>
+>;
