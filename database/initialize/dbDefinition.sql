@@ -18,7 +18,7 @@ CREATE TABLE IF NOT EXISTS tbl_user (
 );
 CREATE INDEX IF NOT EXISTS idx_user_email 
 ON tbl_user(vchr_email) WHERE
-  chr_document_status = 'N';;
+  chr_document_status = 'N';
 
 CREATE TABLE IF NOT EXISTS tbl_category (
   pk_bint_category_id SERIAL PRIMARY KEY NOT NULL,
@@ -36,7 +36,7 @@ CREATE INDEX IF NOT EXISTS idx_category_code_and_name ON tbl_category(
   vchr_category_name,
   chr_document_status
 ) WHERE
-  chr_document_status = 'N';;
+  chr_document_status = 'N';
 
 CREATE TABLE IF NOT EXISTS tbl_stock (
   pk_bint_stock_id SERIAL PRIMARY KEY NOT NULL,
@@ -50,7 +50,7 @@ CREATE TABLE IF NOT EXISTS tbl_stock (
 );
 
 CREATE INDEX IF NOT EXISTS idx_stock_code_and_name ON tbl_stock(vchr_stock_code, vchr_stock_name) WHERE
-  chr_document_status = 'N';;
+  chr_document_status = 'N';
 
 CREATE TABLE IF NOT EXISTS tbl_customer (
   pk_bint_customer_id SERIAL PRIMARY KEY NOT NULL,
